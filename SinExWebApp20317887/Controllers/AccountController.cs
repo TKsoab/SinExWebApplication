@@ -9,20 +9,65 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using SinExWebApp20317887.Models;
+using SinExWebApp20317887.ViewModels;
+using System.Net;
 
 namespace SinExWebApp20317887.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private SinExDatabaseContext db = new SinExDatabaseContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+
+
+        public ActionResult GetAccountRecord()
+        {
+            string userName = System.Web.HttpContext.Current.User.Identity.Name;
+            if (userName == null) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
+            PersonalShippingAccount account1 =db.PersonalShippingAccounts.SingleOrDefault(s => s.UserName == userName);
+            BusinessShippingAccount account2 = db.BusinessShippingAccounts.SingleOrDefault(s => s.UserName == userName);
+            if (account1 == null && account2 == null)
+            {
+                return HttpNotFound("There is no account with user name\"" + userName + "\".");
+            }
+            else if (account1 != null)
+            {
+                ViewBag.AccountType = "Personal";
+                string text=account1.ShippingAccountId.ToString();
+                while (text.Length < 12) {
+                    text = "0" + text;
+                }
+                ViewBag.AccountId = text;
+                return View(account1);
+            }
+            else if (account2 != null) {
+                string text = account2.ShippingAccountId.ToString();
+                while (text.Length < 12)
+                {
+                    text = "0" + text;
+                }
+                ViewBag.AccountId = text;
+                ViewBag.AccountType = "Business";
+                return View(account2);
+            }
+
+            return View();
+        }
+
+
+        public JsonResult CheckUserName(string UserName) {
+            string test=UserName.ToLower();
+            var result = db.ShippingAccounts.Where(s => s.UserName.ToLower() == test).Count()==0;
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +79,9 @@ namespace SinExWebApp20317887.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -75,7 +120,7 @@ namespace SinExWebApp20317887.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -120,7 +165,7 @@ namespace SinExWebApp20317887.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -137,9 +182,10 @@ namespace SinExWebApp20317887.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
-        public ActionResult Register()
+        public ActionResult Register(string accountType)
         {
-            return View();
+            ViewBag.AccountType = accountType;
+            return View(new RegisterCustomerViewModel());
         }
 
         //
@@ -147,27 +193,64 @@ namespace SinExWebApp20317887.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterCustomerViewModel model)
         {
+            var AccountType=ViewBag.AccountType;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                
+                if (model.PersonalInformation != null)
+                {
+                    model.LoginInformation.Email = model.PersonalInformation.Email;
+                    AccountType ="Personal";
+                }
+                else if (model.BusinessInformation != null) // AccountType = "Business"
+                {
+                    model.LoginInformation.Email = model.BusinessInformation.Email;
+                    AccountType = "Business";
+                }
+                else { return View(model); }
+                var user = new ApplicationUser { UserName = model.LoginInformation.UserName, Email = model.LoginInformation.Email };
+                var result = await UserManager.CreateAsync(user, model.LoginInformation.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    // Assign user to Customer role.
+                    var roleResult = await UserManager.AddToRolesAsync(user.Id, "Customer");
+                    if (roleResult.Succeeded)
+                    {
+                        // Create a shipping account for the customer.
+                        if (model.PersonalInformation != null)
+                        {
+                            model.PersonalInformation.UserName = user.UserName;
+                           // model.PersonalInformation.acctype = "Personal";
+                            db.ShippingAccounts.Add(model.PersonalInformation);
+                        }
+                        else if (model.BusinessInformation != null)
+                        {
+                            model.BusinessInformation.UserName = user.UserName;
+                           // model.BusinessInformation.acctype = "Business";
+                            db.ShippingAccounts.Add(model.BusinessInformation);
+                        }
+                        else { return View(model); }
+                        db.SaveChanges();
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    return RedirectToAction("Index", "Home");
+                        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                        // Send an email with this link
+                        // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        AddErrors(roleResult);
+                    }
                 }
                 AddErrors(result);
             }
-
+            ViewBag.AccountType = AccountType;
             // If we got this far, something failed, redisplay form
             return View(model);
         }

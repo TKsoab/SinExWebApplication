@@ -1,0 +1,129 @@
+﻿@model SinExWebApp20317887.Models.PersonalShippingAccount
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+
+<div>
+
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName), 
+
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt>
+            Mailing Address
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BuildingInfo), 
+
+            @Html.DisplayFor(model => model.StreetInfo), 
+
+            @Html.DisplayFor(model => model.CityInfo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProvinceCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProvinceCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PostalCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PostalCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditCardType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreditCardType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditCardNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreditCardNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditCardSecurityNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreditCardSecurityNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditCardHolderName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreditCardHolderName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditCardExpiryYear)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreditCardExpiryYear)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditCardExpiryMonth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreditCardExpiryMonth)
+        </dd>
+
+        <dt>
+            Account ID
+        </dt>
+
+        <dd>
+            @ViewBag.AccountId
+        </dd>
+
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ShippingAccountId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

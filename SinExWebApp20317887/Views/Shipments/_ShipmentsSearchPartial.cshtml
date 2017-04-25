@@ -1,0 +1,30 @@
+﻿@model SinExWebApp20317887.ViewModels.ShipmentsSearchViewModel
+
+@using (Html.BeginForm("GenerateHistoryReport", "Shipments", FormMethod.Get))
+{
+    @Html.LabelFor(a => a.ShippingAccountId, "Shipping Account: ")
+    @Html.DropDownListFor(a => a.ShippingAccountId, Model.ShippingAccounts, "Please select",htmlAttributes:new {@Value=ViewBag.CurrentShippingAccount as int? })
+    <input type="submit" value="Search" />
+    <p></p>
+    @Html.LabelFor(a => a.Shipyearafter, "ShippedDate After:")
+    @Html.DropDownListFor(a => a.Shipyearafter, Model.years , "Year", htmlAttributes: new { @Value = ViewBag.CurrentShipyearafter as string })
+    
+    @Html.LabelFor(a => a.Shipmonthafter,"")
+    @Html.DropDownListFor(a => a.Shipmonthafter, Model.months, "Month", htmlAttributes: new { @Value = ViewBag.CurrentShipmonthafter as string })
+    
+    @Html.LabelFor(a => a.Shipdayafter, "")
+    @Html.DropDownListFor(a => a.Shipdayafter, Model.days, "Day", htmlAttributes: new { @Value = ViewBag.CurrentShipdayafter as string })
+    <input type="submit" value="Search" />
+    <p></p>
+    @Html.LabelFor(a => a.Shipyearbefore, "ShippedDate Before:")
+    @Html.DropDownListFor(a => a.Shipyearbefore, Model.years, "Year", htmlAttributes: new { @Value = ViewBag.CurrentShipyearbefore as string })
+    
+    @Html.LabelFor(a => a.Shipmonthbefore, "")
+    @Html.DropDownListFor(a => a.Shipmonthbefore, Model.months, "Month", htmlAttributes: new { @Value = ViewBag.CurrentShipmonthbefore as string })
+    
+    @Html.LabelFor(a => a.Shipdaybefore, "")
+    @Html.DropDownListFor(a => a.Shipdaybefore, Model.days, "Day", htmlAttributes: new { @Value = ViewBag.CurrentShipdaybefore as string })
+    <input type="submit" value="Search" />
+    <p></p>
+
+}

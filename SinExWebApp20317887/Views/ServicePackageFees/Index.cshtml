@@ -1,0 +1,86 @@
+﻿@model IEnumerable<SinExWebApp20317887.Models.ServicePackageFee>
+
+@{
+    ViewBag.Title = "Service Package Fees";
+}
+
+<h2>Service Package Fees</h2>
+<hr />
+<html>
+<head>
+    <style>
+        table, td, th {
+            border: 1px solid black;
+        }
+
+        th {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    @using (Html.BeginForm("Index", "ServicePackageFees", FormMethod.Get))
+    {
+        @Html.DropDownList("CurrencyCode",new SelectList (new[] { new {ID="CNY",Name="CNY" }, new { ID = "HKD", Name = "HKD" }, new { ID = "TWD", Name = "TWD" },
+   new {ID="MOP",Name="MOP" },},"ID","Name",1))
+        <input type="submit" value="Submit" />
+    }
+
+
+
+    <table class="table">
+        <tr>
+            <th rowspan="2">
+                Service Type
+            </th>
+            <th colspan="5">
+                Package Type
+            </th>
+        </tr>
+        <tr>
+            <th>Envelope</th>
+            <th>Pak</th>
+            <th>Tube</th>
+            <th>Box</th>
+            <th>Customer</th>
+        </tr>
+
+        @for (int i = 0; i <= 6; i++)
+        {
+            <tr>
+
+                @foreach (var item in Model)
+                {
+                    if (item.ServiceTypeID == i)
+                    {
+                        if (item.PackageTypeID == 1)
+                        {
+                            <th>@Html.DisplayFor(modelItem => item.ServiceType.Type)</th>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.Fee)
+                            </th>
+                        }
+                        else if (item.PackageTypeID == 2)
+                        {
+                            <th colspan="2">
+                                @Html.DisplayFor(modelItem => item.Fee)
+                            </th>
+                        }
+                        else if (item.PackageTypeID == 4)
+                        {
+                            <th colspan="2">
+                                @Html.DisplayFor(modelItem => item.Fee)
+                            </th>
+                        }
+
+
+                    }
+
+                }
+            </tr>
+            }
+
+    </table>
+</body>
+</html>

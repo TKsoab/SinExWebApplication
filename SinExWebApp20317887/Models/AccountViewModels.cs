@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using SinExWebApp20317887.Validation;
+using System.Web.Mvc;
+
 
 namespace SinExWebApp20317887.Models
 {
@@ -49,9 +52,9 @@ namespace SinExWebApp20317887.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "User name")]
+        [StringLength(10)]
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -65,19 +68,28 @@ namespace SinExWebApp20317887.Models
     public class RegisterViewModel
     {
         [Required]
-        [EmailAddress]
+        [Display(Name = "User name")]
+        [StringLength(10, MinimumLength = 6)]
+        [RegularExpression(@"^[A-Za-z0-9]*$",ErrorMessage = "User name should contain only letters and digits.")]
+        public string UserName { get; set; }
+
         [Display(Name = "Email")]
+        [StringLength(30)]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [MaxWords(15)]
+        [StringLength(15, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 8)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
+        [RegularExpression(@"^(?=.*(\W.*){2,}).*$")]
         public string Password { get; set; }
 
+        [MaxWords(15)]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [RegularExpression(@"^(?=.*(\W.*){2,}).*$")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -85,6 +97,7 @@ namespace SinExWebApp20317887.Models
     {
         [Required]
         [EmailAddress]
+        
         [Display(Name = "Email")]
         public string Email { get; set; }
 
@@ -96,7 +109,7 @@ namespace SinExWebApp20317887.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

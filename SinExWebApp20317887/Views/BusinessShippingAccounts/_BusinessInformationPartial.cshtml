@@ -1,0 +1,123 @@
+﻿@model SinExWebApp20317887.ViewModels.RegisterCustomerViewModel
+
+<div class="form-group">
+    @Html.LabelFor(model => model.BusinessInformation.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.CompanyName, new { htmlAttributes = new { @class = "form-control", @maxlength = "40" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.CompanyName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<h4>Company Address Information</h4>
+<div class="form-group">
+    @Html.LabelFor(model => model.BusinessInformation.BuildingInfo, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.BuildingInfo, new { htmlAttributes = new { @class = "form-control", @maxlength = "50" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.BuildingInfo, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(model => model.BusinessInformation.StreetInfo, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.StreetInfo, new { htmlAttributes = new { @class = "form-control", @maxlength = "35" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.StreetInfo, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.BusinessInformation.CityInfo, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.CityInfo, new { htmlAttributes = new { @class = "form-control", @maxlength = "25" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.CityInfo, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(model => model.BusinessInformation.ProvinceCode, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.ProvinceCode, new { htmlAttributes = new { @class = "form-control", @maxlength = "2" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.ProvinceCode, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.BusinessInformation.PostalCode, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.PostalCode, new { htmlAttributes = new { @class = "form-control", @maxlength = "6" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.PostalCode, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+
+<h4>Contact Person Information</h4>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.BusinessInformation.ContactPersonName, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.ContactPersonName, new { htmlAttributes = new { @class = "form-control", @maxlength = "70" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.ContactPersonName, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(model => model.BusinessInformation.DepartmentName, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.DepartmentName, new { htmlAttributes = new { @class = "form-control", @maxlength = "40" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.DepartmentName, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.BusinessInformation.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @maxlength = "19" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.PhoneNumber, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(model => model.BusinessInformation.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.Email, new { htmlAttributes = new { @class = "form-control", @maxlength = "30" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.Email, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+
+<h4>Credit Card Information</h4>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.BusinessInformation.CreditCardType, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.CreditCardType, new { htmlAttributes = new { @class = "form-control", @maxlength = "16" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.CreditCardType, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(model => model.BusinessInformation.CreditCardNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.CreditCardNumber, new { htmlAttributes = new { @class = "form-control", @maxlength = "19" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.CreditCardNumber, "", new { @class = "text-danger" })
+    </div>
+</div><div>
+            Allowed Card Type: American Express, DinersClub, Discover, MasterCard, UnionPay, Visa
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.BusinessInformation.CreditCardSecurityNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.CreditCardSecurityNumber, new { htmlAttributes = new { @class = "form-control", @maxlength = "4" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.CreditCardSecurityNumber, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(model => model.BusinessInformation.CreditCardHolderName, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.CreditCardHolderName, new { htmlAttributes = new { @class = "form-control", @maxlength = "70" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.CreditCardHolderName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.BusinessInformation.CreditCardExpiryYear, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.CreditCardExpiryYear, new { htmlAttributes = new { @class = "form-control", @maxlength = "4" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.CreditCardExpiryYear, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(model => model.BusinessInformation.CreditCardExpiryMonth, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-4">
+        @Html.EditorFor(model => model.BusinessInformation.CreditCardExpiryMonth, new { htmlAttributes = new { @class = "form-control", @maxlength = "2" } })
+        @Html.ValidationMessageFor(model => model.BusinessInformation.CreditCardExpiryMonth, "", new { @class = "text-danger" })
+    </div>
+</div>
+
